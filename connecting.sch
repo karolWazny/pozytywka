@@ -10,7 +10,6 @@
         <signal name="XLXN_2(3:0)" />
         <signal name="XLXN_3(3:0)" />
         <signal name="XLXN_4(11:0)" />
-        <signal name="XLXN_6" />
         <signal name="Clk_50MHz" />
         <signal name="SPI_MOSI" />
         <signal name="SPI_MISO" />
@@ -22,11 +21,10 @@
         <signal name="AD_CONV" />
         <signal name="SF_CE0" />
         <signal name="FPGA_INIT_B" />
-        <signal name="XLXN_21" />
-        <signal name="XLXN_22" />
-        <signal name="XLXN_23" />
         <signal name="Reset" />
-        <signal name="XLXN_24" />
+        <signal name="XLXN_26(3:0)" />
+        <signal name="XLXN_27(3:0)" />
+        <signal name="XLXN_28(3:0)" />
         <port polarity="Input" name="Clk_50MHz" />
         <port polarity="Output" name="SPI_MOSI" />
         <port polarity="Input" name="SPI_MISO" />
@@ -65,9 +63,11 @@
             <line x2="0" y1="160" y2="160" x1="64" />
         </blockdef>
         <blockdef name="saw">
-            <timestamp>2022-4-28T8:40:44</timestamp>
+            <timestamp>2022-5-4T20:58:50</timestamp>
             <rect width="256" x="64" y="-256" height="256" />
             <line x2="0" y1="-224" y2="-224" x1="64" />
+            <rect width="64" x="0" y="-44" height="24" />
+            <line x2="0" y1="-32" y2="-32" x1="64" />
             <line x2="384" y1="-224" y2="-224" x1="320" />
             <rect width="64" x="320" y="-172" height="24" />
             <line x2="384" y1="-160" y2="-160" x1="320" />
@@ -75,6 +75,11 @@
             <line x2="384" y1="-96" y2="-96" x1="320" />
             <rect width="64" x="320" y="-44" height="24" />
             <line x2="384" y1="-32" y2="-32" x1="320" />
+        </blockdef>
+        <blockdef name="constant">
+            <timestamp>2006-1-1T10:10:10</timestamp>
+            <rect width="112" x="0" y="0" height="64" />
+            <line x2="112" y1="32" y2="32" x1="144" />
         </blockdef>
         <block symbolname="DACWrite" name="XLXI_2">
             <blockpin signalname="Reset" name="Reset" />
@@ -98,48 +103,47 @@
         </block>
         <block symbolname="saw" name="XLXI_4">
             <blockpin signalname="Clk_50MHz" name="Clk_50MHz" />
+            <blockpin signalname="XLXN_28(3:0)" name="pitch(3:0)" />
             <blockpin signalname="XLXN_1" name="Start" />
             <blockpin signalname="XLXN_2(3:0)" name="Cmd(3:0)" />
             <blockpin signalname="XLXN_3(3:0)" name="Addr(3:0)" />
             <blockpin signalname="XLXN_4(11:0)" name="DATA(11:0)" />
         </block>
+        <block symbolname="constant" name="XLXI_5">
+            <attr value="00" name="CValue">
+                <trait delete="all:1 sym:0" />
+                <trait editname="all:1 sch:0" />
+                <trait valuetype="BitVector 32 Hexadecimal" />
+            </attr>
+            <blockpin signalname="XLXN_28(3:0)" name="O" />
+        </block>
     </netlist>
     <sheet sheetnum="1" width="3520" height="2720">
         <instance x="2320" y="1264" name="XLXI_2" orien="R0">
         </instance>
-        <branch name="XLXN_1">
-            <wire x2="1920" y1="944" y2="944" x1="1520" />
-            <wire x2="1920" y1="720" y2="944" x1="1920" />
-            <wire x2="2304" y1="720" y2="720" x1="1920" />
-            <wire x2="2320" y1="720" y2="720" x1="2304" />
-        </branch>
         <branch name="XLXN_2(3:0)">
-            <wire x2="1936" y1="1008" y2="1008" x1="1520" />
-            <wire x2="1936" y1="784" y2="1008" x1="1936" />
-            <wire x2="2304" y1="784" y2="784" x1="1936" />
-            <wire x2="2320" y1="784" y2="784" x1="2304" />
+            <wire x2="2032" y1="1008" y2="1008" x1="1728" />
+            <wire x2="2032" y1="784" y2="1008" x1="2032" />
+            <wire x2="2320" y1="784" y2="784" x1="2032" />
         </branch>
         <branch name="XLXN_3(3:0)">
-            <wire x2="1952" y1="1072" y2="1072" x1="1520" />
-            <wire x2="1952" y1="848" y2="1072" x1="1952" />
-            <wire x2="2304" y1="848" y2="848" x1="1952" />
-            <wire x2="2320" y1="848" y2="848" x1="2304" />
+            <wire x2="2048" y1="1072" y2="1072" x1="1728" />
+            <wire x2="2048" y1="848" y2="1072" x1="2048" />
+            <wire x2="2320" y1="848" y2="848" x1="2048" />
         </branch>
         <branch name="XLXN_4(11:0)">
-            <wire x2="1968" y1="1136" y2="1136" x1="1520" />
-            <wire x2="1968" y1="912" y2="1136" x1="1968" />
-            <wire x2="2304" y1="912" y2="912" x1="1968" />
+            <wire x2="2304" y1="1136" y2="1136" x1="1728" />
             <wire x2="2320" y1="912" y2="912" x1="2304" />
+            <wire x2="2304" y1="912" y2="1136" x1="2304" />
         </branch>
         <branch name="Clk_50MHz">
             <wire x2="928" y1="944" y2="944" x1="640" />
-            <wire x2="1120" y1="944" y2="944" x1="928" />
-            <wire x2="1136" y1="944" y2="944" x1="1120" />
             <wire x2="928" y1="944" y2="1360" x1="928" />
             <wire x2="2240" y1="1360" y2="1360" x1="928" />
             <wire x2="2320" y1="1360" y2="1360" x1="2240" />
             <wire x2="2240" y1="1360" y2="1424" x1="2240" />
             <wire x2="2320" y1="1424" y2="1424" x1="2240" />
+            <wire x2="1344" y1="944" y2="944" x1="928" />
         </branch>
         <branch name="SPI_MOSI">
             <wire x2="2800" y1="720" y2="720" x1="2768" />
@@ -182,16 +186,27 @@
         </branch>
         <iomarker fontsize="28" x="2800" y="1296" name="FPGA_INIT_B" orien="R0" />
         <iomarker fontsize="28" x="640" y="944" name="Clk_50MHz" orien="R180" />
+        <iomarker fontsize="28" x="656" y="1296" name="Reset" orien="R180" />
         <branch name="Reset">
             <wire x2="864" y1="1296" y2="1296" x1="656" />
-            <wire x2="864" y1="1136" y2="1296" x1="864" />
-            <wire x2="1072" y1="1136" y2="1136" x1="864" />
-            <wire x2="1072" y1="1136" y2="1296" x1="1072" />
+            <wire x2="864" y1="1200" y2="1296" x1="864" />
+            <wire x2="1072" y1="1200" y2="1200" x1="864" />
+            <wire x2="1072" y1="1200" y2="1296" x1="1072" />
             <wire x2="2320" y1="1296" y2="1296" x1="1072" />
             <wire x2="1104" y1="1136" y2="1136" x1="1072" />
+            <wire x2="1072" y1="1136" y2="1200" x1="1072" />
         </branch>
-        <iomarker fontsize="28" x="656" y="1296" name="Reset" orien="R180" />
-        <instance x="1136" y="1168" name="XLXI_4" orien="R0">
+        <instance x="1344" y="1168" name="XLXI_4" orien="R0">
+        </instance>
+        <branch name="XLXN_1">
+            <wire x2="2016" y1="944" y2="944" x1="1728" />
+            <wire x2="2016" y1="720" y2="944" x1="2016" />
+            <wire x2="2320" y1="720" y2="720" x1="2016" />
+        </branch>
+        <branch name="XLXN_28(3:0)">
+            <wire x2="1344" y1="1136" y2="1136" x1="1312" />
+        </branch>
+        <instance x="1168" y="1104" name="XLXI_5" orien="R0">
         </instance>
     </sheet>
 </drawing>

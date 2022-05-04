@@ -53,7 +53,7 @@ ARCHITECTURE behavior OF saw_test IS
 
    --Inputs
    signal Clk_50MHz : std_logic := '0';
-	signal pitch : std_logic_vector(3 downto 0) := "0000";
+	signal pitch : std_logic_vector(3 downto 0) := "0001";
 
  	--Outputs
    signal Start : std_logic;
