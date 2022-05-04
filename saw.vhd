@@ -31,6 +31,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity saw is
     Port ( Clk_50MHz : in  STD_LOGIC;
+			  pitch : in STD_LOGIC_VECTOR (3 downto 0);
            Start : out  STD_LOGIC;
            Cmd : out  STD_LOGIC_VECTOR (3 downto 0);
            Addr : out  STD_LOGIC_VECTOR (3 downto 0);
@@ -38,19 +39,59 @@ entity saw is
 end saw;
 
 architecture Behavioral of saw is
-	signal count : INTEGER RANGE 0 TO 16384; --tu zale¿nie od obs³ugiwanych czêstotliwoœci trzeba ustawiæ zakres
+	signal count, count_limit : INTEGER RANGE 0 TO 16384; --tu zalenie od obsugiwanych czstotliwoci trzeba ustawi zakres
 	signal output_value : INTEGER RANGE 0 TO 15;
-	type deriv_state is ('A', 'B', 'C');
+	type deriv_state is ('A', 'B');
 	signal deriv, next_deriv : deriv_state;
 	
 begin
+	PROCESS(pitch)
+	BEGIN
+		CASE pitch IS
+			WHEN "0000" =>
+				count_limit <= 3125;
+			WHEN "0001" =>
+				count_limit <= 2950;
+			WHEN "0010" =>
+				count_limit <= 2784;
+			WHEN "0011" =>
+				count_limit <= 2628;
+			WHEN "0100" =>
+				count_limit <= 2480;
+			WHEN "0101" =>
+				count_limit <= 2341;
+			WHEN "0110" =>
+				count_limit <= 2210;
+			WHEN "0111" =>
+				count_limit <= 2086;
+			WHEN "1000" =>
+				count_limit <= 1969;
+			WHEN "1001" =>
+				count_limit <= 1858;
+			WHEN "1010" =>
+				count_limit <= 1754;
+			WHEN "1011" =>
+				count_limit <= 1655;
+			WHEN "1100" =>
+				count_limit <= 1563;
+			WHEN "1101" =>
+				count_limit <= 1474;
+			WHEN "1110" =>
+				count_limit <= 1392;
+			WHEN "1111" =>
+				count_limit <= 1314;
+			WHEN OTHERS =>
+				count_limit <= 3125;
+		END CASE;
+	END PROCESS;
+
 	process (Clk_50MHz)
 	BEGIN
 		count <= count;
 		IF (rising_edge(Clk_50MHz)) THEN
 			count <= count + 1;
 		END IF;
-		IF (count = 4167) THEN
+		IF (count = count_limit) THEN
 			count <= 0;
 			IF (output_value = 15) THEN
 				output_value <= 0;
@@ -68,8 +109,6 @@ begin
 			when 'A' =>
 				next_deriv <= 'B';
 			when 'B' =>
-				next_deriv <= 'C';
-			when 'C' =>
 				if count = 0 then
 					next_deriv <= 'A';
 				end if;
@@ -78,11 +117,12 @@ begin
 	
 	process(Clk_50MHz)
 	BEGIN
-		deriv <= next_deriv;
+		IF (rising_edge(Clk_50MHz)) THEN
+			deriv <= next_deriv;
+		END IF;		
 	END PROCESS;
 	
-	Start <= '1' when deriv = 'B' or deriv = 'A' else '0';
+	Start <= '1' when deriv = 'A' else '0';
 	Cmd <= "0000";
 	Addr <= "0000";
 end Behavioral;
- 

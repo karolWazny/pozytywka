@@ -42,6 +42,7 @@ ARCHITECTURE behavior OF saw_test IS
     COMPONENT saw
     PORT(
          Clk_50MHz : IN  std_logic;
+			pitch : in STD_LOGIC_VECTOR (3 downto 0);
          Start : OUT  std_logic;
          Cmd : OUT  std_logic_vector(3 downto 0);
          Addr : OUT  std_logic_vector(3 downto 0);
@@ -52,6 +53,7 @@ ARCHITECTURE behavior OF saw_test IS
 
    --Inputs
    signal Clk_50MHz : std_logic := '0';
+	signal pitch : std_logic_vector(3 downto 0) := "0000";
 
  	--Outputs
    signal Start : std_logic;
@@ -60,12 +62,13 @@ ARCHITECTURE behavior OF saw_test IS
    signal DATA : std_logic_vector(11 downto 0);
 
    -- Clock period definitions
-   constant Clk_50MHz_period : time := 10 ns;
+   constant Clk_50MHz_period : time := 20 ns;
  
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: saw PORT MAP (
+			 pitch => pitch,
           Clk_50MHz => Clk_50MHz,
           Start => Start,
           Cmd => Cmd,
