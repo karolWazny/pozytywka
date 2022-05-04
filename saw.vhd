@@ -31,7 +31,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity saw is
     Port ( Clk_50MHz : in  STD_LOGIC;
-			  pitch : in STD_LOGIC_VECTOR (3 downto 0);
+			pitch : in STD_LOGIC_VECTOR (3 downto 0);
            Start : out  STD_LOGIC;
            Cmd : out  STD_LOGIC_VECTOR (3 downto 0);
            Addr : out  STD_LOGIC_VECTOR (3 downto 0);
