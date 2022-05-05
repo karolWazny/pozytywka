@@ -31,7 +31,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity saw is
     Port ( Clk_50MHz : in  STD_LOGIC;
-			pitch : in STD_LOGIC_VECTOR (3 downto 0);
+			  pitch : in STD_LOGIC_VECTOR (3 downto 0);
            Start : out  STD_LOGIC;
            Cmd : out  STD_LOGIC_VECTOR (3 downto 0);
            Addr : out  STD_LOGIC_VECTOR (3 downto 0);
@@ -39,67 +39,70 @@ entity saw is
 end saw;
 
 architecture Behavioral of saw is
-	signal count, count_limit : INTEGER RANGE 0 TO 16384; --tu zalenie od obsugiwanych czstotliwoci trzeba ustawi zakres
-	signal output_value : INTEGER RANGE 0 TO 15;
+	signal count, next_count, count_limit : INTEGER RANGE 0 TO 16384; --tu zalenie od obsugiwanych czstotliwoci trzeba ustawi zakres
+	signal output_value, next_output_value : INTEGER RANGE 0 TO 15;
 	type deriv_state is ('A', 'B');
 	signal deriv, next_deriv : deriv_state;
+	signal play_sound : STD_LOGIC;
 	
 begin
 	PROCESS(pitch)
 	BEGIN
+		play_sound <= '1';
 		CASE pitch IS
 			WHEN "0000" =>
-				count_limit <= 3125;
+				count_limit <= 11946;
 			WHEN "0001" =>
-				count_limit <= 2950;
+				count_limit <= 11275;
 			WHEN "0010" =>
-				count_limit <= 2784;
+				count_limit <= 10642;
 			WHEN "0011" =>
-				count_limit <= 2628;
+				count_limit <= 10045;
 			WHEN "0100" =>
-				count_limit <= 2480;
+				count_limit <= 9481;
 			WHEN "0101" =>
-				count_limit <= 2341;
+				count_limit <= 8949;
 			WHEN "0110" =>
-				count_limit <= 2210;
+				count_limit <= 8447;
 			WHEN "0111" =>
-				count_limit <= 2086;
+				count_limit <= 7973;
 			WHEN "1000" =>
-				count_limit <= 1969;
+				count_limit <= 7525;
 			WHEN "1001" =>
-				count_limit <= 1858;
+				count_limit <= 7103;
 			WHEN "1010" =>
-				count_limit <= 1754;
+				count_limit <= 6704;
 			WHEN "1011" =>
-				count_limit <= 1655;
+				count_limit <= 6328;
 			WHEN "1100" =>
-				count_limit <= 1563;
-			WHEN "1101" =>
-				count_limit <= 1474;
-			WHEN "1110" =>
-				count_limit <= 1392;
-			WHEN "1111" =>
-				count_limit <= 1314;
+				count_limit <= 5973;
 			WHEN OTHERS =>
 				count_limit <= 3125;
+				play_sound <= '0';
 		END CASE;
 	END PROCESS;
 
 	process (Clk_50MHz)
 	BEGIN
-		count <= count;
 		IF (rising_edge(Clk_50MHz)) THEN
-			count <= count + 1;
+			count <= next_count;
+			deriv <= next_deriv;
+			output_value <= next_output_value;
 		END IF;
+	END PROCESS;
+	
+	process(count, output_value, count_limit)
+	BEGIN
+		next_count <= count + 1;
+		next_output_value <= output_value;
 		IF (count = count_limit) THEN
-			count <= 0;
+			next_count <= 0;
 			IF (output_value = 15) THEN
-				output_value <= 0;
+				next_output_value <= 0;
 			ELSE
-				output_value <= output_value + 1;
+				next_output_value <= output_value + 1;
 			END IF;
 		END IF;
-		DATA <= std_logic_vector(to_unsigned(output_value, 4)) & "00000000";
 	END PROCESS;
 	
 	process(deriv, count)
@@ -115,14 +118,8 @@ begin
 		end case;
 	END PROCESS;
 	
-	process(Clk_50MHz)
-	BEGIN
-		IF (rising_edge(Clk_50MHz)) THEN
-			deriv <= next_deriv;
-		END IF;		
-	END PROCESS;
-	
-	Start <= '1' when deriv = 'A' else '0';
-	Cmd <= "0000";
-	Addr <= "0000";
+	Start <= '1' when deriv = 'A' and play_sound = '1' else '0';
+	Cmd <= "0011";
+	Addr <= "1111";
+	DATA <= std_logic_vector(to_unsigned(output_value, 4)) & "00000000";
 end Behavioral;
