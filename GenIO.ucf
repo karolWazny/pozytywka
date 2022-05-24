@@ -14,15 +14,15 @@ NET "Clk_50MHz" PERIOD = 20.0ns HIGH 50%;
 #NET "btn_north" LOC = "V4"  | IOSTANDARD = LVTTL | PULLDOWN;
 #NET "btn_east"  LOC = "H13" | IOSTANDARD = LVTTL | PULLDOWN;
 #NET "btn_south" LOC = "K17" | IOSTANDARD = LVTTL | PULLDOWN;
-NET "btn_west"  LOC = "D18" | IOSTANDARD = LVTTL | PULLDOWN;
+#NET "btn_west"  LOC = "D18" | IOSTANDARD = LVTTL | PULLDOWN;
 
 #
 # Slide switches (Up = Hi)
 #
 NET "mRESET" LOC = "L13" | IOSTANDARD = LVTTL | PULLUP;
 NET "CE" LOC = "L14" | IOSTANDARD = LVTTL | PULLUP;
-#NET "pitch(2)" LOC = "H18" | IOSTANDARD = LVTTL | PULLUP;
-#NET "pitch(3)" LOC = "N17" | IOSTANDARD = LVTTL | PULLUP;
+#NET "melody(0)" LOC = "H18" | IOSTANDARD = LVTTL | PULLUP;
+NET "melody" LOC = "N17" | IOSTANDARD = LVTTL | PULLUP;
 
 #
 # Rotary encoder

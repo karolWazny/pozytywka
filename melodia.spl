@@ -1,0 +1,8 @@
+[Inputs]
+Clk_50MHz
+CE
+RESET
+melody
+[Outputs]
+=note[3:0]=
+[BiDir]
