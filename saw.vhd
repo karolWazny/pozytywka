@@ -41,7 +41,7 @@ end saw;
 architecture Behavioral of saw is
 	signal count, next_count, count_limit : INTEGER RANGE 0 TO 16384; --tu zalenie od obsugiwanych czstotliwoci trzeba ustawi zakres
 	signal output_value, next_output_value : INTEGER RANGE 0 TO 15;
-	type deriv_state is ('A', 'B');
+	type deriv_state is ('A', 'B', 'C');
 	signal deriv, next_deriv : deriv_state;
 	signal play_sound : STD_LOGIC;
 	
@@ -110,10 +110,14 @@ begin
 		next_deriv <= deriv;
 		case deriv is
 			when 'A' =>
-				next_deriv <= 'B';
+				next_deriv <= 'C';
 			when 'B' =>
 				if count = 0 then
 					next_deriv <= 'A';
+				end if;
+			when 'C' =>
+				if count /= 0 then
+					next_deriv <= 'B';
 				end if;
 		end case;
 	END PROCESS;
